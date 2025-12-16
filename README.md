@@ -23,8 +23,8 @@ This tool scans a target IP address to detect open ports and is intended for **e
 
 Clone the repository:
 ```bash
-git clone https://github.com/yourusername/python-port-scanner.git
-cd python-port-scanner
+git clone https://github.com/yagere941-crypto/python-checkport.git
+cd python-checkport
 
 ```
 
@@ -34,7 +34,7 @@ cd python-port-scanner
 
 Run the script:
 ```
-python port_scanner.py
+python checkport.py
 
 ```
 
