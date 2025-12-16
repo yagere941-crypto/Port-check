@@ -40,7 +40,7 @@ python port_scanner.py
 
 When prompted, enter the target IP address:
 ```
-Enter target IP Address: 192.168.1.1
+Enter target IP Address: 127.0.0.1
 
 ```
 
