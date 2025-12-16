@@ -1,16 +1,18 @@
 # 🔍 Python Port Scanner
 
 A simple, fast, and multi-threaded **TCP port scanner** built using Python.  
-This tool scans a target IP address to detect open ports and is intended for **educational and authorized security testing only**.
+This tool scans a target IP address to detect **open ports and common services**.  
+It is intended for **educational purposes and authorized security testing only**.
 
 ---
 
 ## 🚀 Features
-- Scans ports from **1 to 5000**
+- Scan **default common ports** or a **custom port range**
 - Multi-threaded scanning using `ThreadPoolExecutor`
+- Basic **service identification**
+- **Banner grabbing** for common services (FTP, SSH, HTTP, etc.)
 - Lightweight and easy to understand
-- Adjustable socket timeout
-- No external dependencies
+- No external dependencies (uses Python standard library only)
 
 ---
 
@@ -21,30 +23,36 @@ This tool scans a target IP address to detect open ports and is intended for **e
 
 ## ▶️ Installation
 
-Clone the repository:
+Clone the repository and move into the project directory:
+
 ```bash
 git clone https://github.com/yagere941-crypto/python-checkport.git
 cd python-checkport
-
 ```
-
-
 
 # ▶️ Usage
 
 Run the script:
-```
+```bash
 python checkport.py
 
 ```
 
 When prompted, enter the target IP address:
-```
-Enter target IP Address: 127.0.0.1
+```bash
+Enter Target IP Address: 127.0.0.1
 
+```
+Scan a specific target directly
+```bash
+python checkport.py 127.0.0.1
+```
+Scan a custom port range
+```bash
+python checkport.py 127.0.0.1 1-5000
 ```
 
 # 📄 Sample Output
-- [OPEN] Port 22
-- [OPEN] Port 80
-- [OPEN] Port 443
+- [OPEN] Port 22 (SSH)
+- [OPEN] Port 80 (HTTP)
+- [OPEN] Port 443 (HTTPS)
