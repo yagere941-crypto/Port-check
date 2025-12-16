@@ -33,16 +33,16 @@ cd python-port-scanner
 # ▶️ Usage
 
 Run the script:
-
+```
 python port_scanner.py
 
----
+```
 
 When prompted, enter the target IP address:
-
+```
 Enter target IP Address: 192.168.1.1
 
----
+```
 
 # 📄 Sample Output
 - [OPEN] Port 22
