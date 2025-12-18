@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+# python3 and above version req make sure about it. Thank You
 """
 Educational Python Port Scanner (mini-Nmap)
 Safe, legal, and educational for network learning.
@@ -49,8 +49,23 @@ class PortScanner:
             except socket.gaierror:
                 raise ValueError(f"Could not resolve hostname: {target}")
 
+    def get_ports(self, ports_arg: Optional[str], top_ports: bool) -> List[int]:
+        """Get ports from CLI args or default safe range."""
+        if top_ports:
+            return [21, 22, 23, 25, 53, 80, 110, 143, 443, 465, 993, 995, 3306, 3389]
+        elif ports_arg:
+            try:
+                start, end = map(int, ports_arg.split('-'))
+                return list(range(start, end + 1))
+            except (ValueError, IndexError):
+                raise ValueError(f"Invalid port range: {ports_arg}. Use format 'start-end'")
+        else:
+            # Default safe range for educational purposes
+            return list(range(1, 1025))
+
     def scan_port(self, target: str, port: int, stealth: bool = False) -> Optional[Tuple[int, str, str]]:
         """Scan a single port and return results."""
+        self.scan_stats["total"] += 1  # Track total ports scanned
         logger.debug(f"Scanning port {port} on {target}")
         try:
             with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
@@ -209,12 +224,8 @@ def main():
     try:
         target = scanner.resolve_hostname(args.target)
         
-        if args.top_ports:
-            ports = [21, 22, 23, 25, 53, 80, 110, 143, 443, 465, 993, 995, 3306, 3389]
-        elif args.ports:
-            ports = list(map(int, args.ports.split('-')))
-        else:
-            ports = [1, 1024, 2048, 3072, 4096, 5000, 6000, 7000, 8000, 9000, 10000]
+        # Get ports using new helper function
+        ports = scanner.get_ports(args.ports, args.top_ports)
         
         print(f"Scanning {len(ports)} ports on {target}")
         start_time = time.time()
@@ -243,6 +254,9 @@ def main():
             
     except KeyboardInterrupt:
         print("\nScan interrupted by user.")
+        sys.exit(1)
+    except ValueError as e:
+        print(f"Error: {str(e)}")
         sys.exit(1)
     except Exception as e:
         print(f"Error: {str(e)}")
