@@ -25,9 +25,10 @@ logging.basicConfig(
 logger = logging.getLogger(__name__)
 
 class PortScanner:
-    def __init__(self, timeout: float = 1.0, threads: int = 100):
+    def __init__(self, timeout: float = 1.0, threads: int = 100, delay: float = 0.1):
         self.timeout = timeout
         self.threads = threads
+        self.delay = delay
         self.results = []
         self.scan_stats = {
             "total": 0,
@@ -123,15 +124,15 @@ class PortScanner:
         except:
             return None
 
-    def slow_scan(self, target: str, ports: List[int], delay: float = 0.1) -> List[Tuple[int, str, str]]:
+    def slow_scan(self, target: str, ports: List[int]) -> List[Tuple[int, str, str]]:
         """Scan with rate limiting."""
-        logger.info(f"Starting slow scan with {delay}s delay between ports")
+        logger.info(f"Starting slow scan with {self.delay}s delay between ports")
         results = []
         for port in ports:
             result = self.scan_port(target, port)
             if result:
                 results.append(result)
-            time.sleep(delay)
+            time.sleep(self.delay)
         return results
 
     def save_results(self, target: str, results: List[Tuple[int, str, str]], 
@@ -219,7 +220,7 @@ def main():
 ╚═════════════════════════════════════════════╝
     """)
     
-    scanner = PortScanner(timeout=args.timeout, threads=args.threads)
+    scanner = PortScanner(timeout=args.timeout, threads=args.threads, delay=0.5)
     
     try:
         target = scanner.resolve_hostname(args.target)
@@ -250,7 +251,7 @@ def main():
         if args.output:
             scanner.save_results(target, scanner.results, args.output, 
                                args.output.split('.')[-1].lower())
-            print(f"Results saved to {args.output}")
+           print(f"Scan results have been successfully saved to {args.output}.")
             
     except KeyboardInterrupt:
         print("\nScan interrupted by user.")
